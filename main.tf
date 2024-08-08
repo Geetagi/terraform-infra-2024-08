@@ -8,6 +8,38 @@ resource "aws_vpc" "my_vpc" {
     Name = "myterraformVPC"
   }
 }
+
+resource "aws_vpc" "main" {
+  cidr_block = "10.0.0.0/16"
+  enable_dns_hostnames = true
+}
+
+resource "aws_subnet" "web" {
+  count = 3
+  vpc_id = aws_vpc.main.id
+  cidr_block = "10.0.${count.index}.0/24"
+  availability_zone = "us-east-1a"  // Adjust as per your region
+}
+
+resource "aws_subnet" "tomcat" {
+  count = 3
+  vpc_id = aws_vpc.main.id
+  cidr_block = "10.0.${count.index + 10}.0/24"
+  availability_zone = "us-east-1b"  // Adjust as per your region
+}
+
+resource "aws_subnet" "alb" {
+  count = 3
+  vpc_id = aws_vpc.main.id
+  cidr_block = "10.0.${count.index + 20}.0/24"
+  availability_zone = "us-east-1c"  // Adjust as per your region
+}
+
+resource "aws_subnet" "jump" {
+  vpc_id = aws_vpc.main.id
+  cidr_block = "10.0.30.0/24"
+  availability_zone = "us-east-1a"  // Adjust as per your region
+}
 resource "aws_subnet" "publicSubnet" {
   vpc_id     = aws_vpc.my_vpc.id
   cidr_block = "10.0.1.0/24"
