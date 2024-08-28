@@ -1,16 +1,5 @@
-variable "region" {
-  description = "The AWS region where resources will be created"
+variable "cidr" {
+  description = "The CIDR block for the VPC"
   type        = string
-  default     = "us-east-1"
-}
-
-variable "db_username" {
-  description = "The username for the database"
-  type        = string
-}
-
-variable "db_password" {
-  description = "The password for the database"
-  type        = string
-  sensitive   = true
+  default     = "10.0.0.0/16" 
 }
